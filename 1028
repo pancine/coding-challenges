@@ -1,4 +1,4 @@
-//C99
+//C99 22/08/2019
 #include <stdio.h>
 
 int mdc(int num1, int num2) {
