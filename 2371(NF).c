@@ -2,20 +2,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int **creategame(int lin, int col);
-void freegame(int **game, int lin);
-void fillgame(int **game, int lin, int col);
-void printgame(int **game, int lin, int col); //remover
-int play(int **game, int x, int y);
-int search(int **game, int x, int y, int lin, int col);
-int check(int **game, int x, int y);
-int count(int **game, int lin, int col);
+#define NAVIO '#'
+#define HIT 'F'
+#define VERIFICADO 'C'
+
+char **creategame(int lin, int col);
+void freegame(char **game, int lin);
+void fillgame(char **game, int lin, int col);
+int play(char **game, int x, int y);
+int verify(char **game, int x, int y, int lin, int col);
+int contando(char **game, int lin, int col);
 
 int main()
 {
 	//Parte 1: Montando o jogo
 	int lin, col;
-	int **tabuleiro;
+	char **tabuleiro;
 	scanf("%d %d", &lin, &col);
 	tabuleiro = creategame(col, lin);
 	fillgame(tabuleiro, lin, col);
@@ -29,21 +31,16 @@ int main()
 	}
 
 	//Parte 3: Verificando navios
-	int cont;
-	printgame(tabuleiro, lin, col);
-	cont = count(tabuleiro, lin, col);
-	printf("%d\n", cont);
-	printgame(tabuleiro, lin, col);
-	freegame(tabuleiro, lin);
+	printf("%d\n", contando(tabuleiro, lin, col));
 	return 0;
 }
 
-int **creategame(int lin, int col) {
+char **creategame(int lin, int col) {
 	//Cria o jogo vazio
-	int **game = NULL;
-	if ((game = (int**) malloc(lin * sizeof(int*))) != NULL) {
+	char **game = NULL;
+	if ((game = (char**) malloc(lin * sizeof(char*))) != NULL) {
 		for (int i = 0; i < col; i++) {
-			if ( (game[i] = (int*) malloc(col * sizeof(int))) == NULL) {
+			if ( (game[i] = (char*) malloc(col * sizeof(char))) == NULL) {
 				while (i) {
 					i--;
 					free(game[i]);
@@ -56,129 +53,77 @@ int **creategame(int lin, int col) {
 	return game;
 }
 
-void freegame(int **game, int lin) {
+void freegame(char **game, int lin) {
 	//Limpa memória
 	for (int i = 0; i < lin; i++) {
 		free(game[i]);
 	}
 }
 
-void fillgame(int **game, int lin, int col) {
-	//Preenche o jogo com 0 e 1
-	char str[col];
-	for (int x = 0; x < lin; x++) {
-		scanf("%s", str);
-		for (int y = 0; y < col; y++) {
-			if (str[y] == '#') {
-				game[x][y] = 1;
-			}
-			else if (str[y] == '.') {
-				game[x][y] = 0;
-			}
-		}
-	}
-}
-
-void printgame(int **game, int lin, int col) {
-	//printa o jogo (apenas para debug)
+void fillgame(char **game, int lin, int col) {
+	//Preenche o jogo
 	for (int i = 0; i < lin; i++) {
-		for (int j = 0; j < col; j++) {
-			printf("%d", game[i][j]);
-		}
-		printf("\n");
+		scanf("%s", game[i]);
 	}
 }
 
-int play(int **game, int x, int y) {
-	//Acertos são marcados com 2
-	if (game[x-1][y-1] == 1) {
-		game[x-1][y-1] = 2;
+int play(char **game, int x, int y) {
+	//Acertos são marcados com F
+	if (game[x-1][y-1] == NAVIO) {
+		game[x-1][y-1] = HIT;
 	}
 	return 0;
 }
 
-int search(int **game, int x, int y, int lin, int col) {
-	//busca numeros 2 consequentes que nao possuem 1 em sequencia (cima, direita, baixo, esquerda)
-	printf("%d %d\n", x, y);
-	int flag;
+int verify(char **game, int x, int y, int lin, int col) {
+	//Verifica cima baixo direita esquerda e se achar um NAVIO retorna 0;
+	int flag = 1;
+	game[x][y] = VERIFICADO;
 	if (x-1 >= 0) {
-		flag = check(game, x-1, y);
-		printf("!c!%d!\n", flag);
-		if (flag == 1) {
-			game[x][y] = 0;
-			return 0;
+		if (game[x-1][y] == NAVIO) {
+			flag = 0;
 		}
-		else if (flag == 2) {
-			game[x][y] = 0;
-			if (search(game, x-1, y, lin, col) == 0) {
-				return 0;
-			}
-		}
-	}
-	if (y+1 < col) {
-		flag = check(game, x, y+1);
-		printf("!d!%d!\n", flag);
-		if (flag == 1) {
-			game[x][y] = 0;
-			return 0;
-		}
-		else if (flag == 2) {
-			game[x][y] = 0;
-			if (search(game, x, y+1, lin, col) == 0) {
-				return 0;
-			}
+		else if (game[x-1][y] == HIT) {
+			flag = (verify(game, x-1, y, lin, col) && flag);
 		}
 	}
 	if (x+1 < lin) {
-		flag = check(game, x+1, y);
-		printf("!b!%d!\n", flag);
-		if (flag == 1) {
-			game[x][y] = 0;
-			return 0;
+		if (game[x+1][y] == NAVIO) {
+			flag = 0;
 		}
-		else if (flag == 2) {
-			game[x][y] = 0;
-			if (search(game, x+1, y, lin, col) == 0) {
-				return 0;
-			}
+		else if (game[x+1][y] == HIT) {
+			flag = (verify(game, x+1, y, lin, col) && flag);
 		}
 	}
 	if (y-1 >= 0) {
-		flag = check(game, x, y-1);
-		if (flag == 1) {
-			game[x][y] = 0;
-			return 0;
+		if (game[x][y-1] == NAVIO) {
+			flag = 0;
 		}
-		else if (flag == 2) {
-			game[x][y] = 0;
-			if (search(game, x, y-1, lin, col) == 0) {
-				return 0;
-			}
+		else if (game[x][y-1] == HIT) {
+			flag = (verify(game, x, y-1, lin, col) && flag);
 		}
 	}
-	game[x][y] = 0;
-	return 1;
+	if (y+1 < col) {
+		if (game[x][y+1] == NAVIO) {
+			flag = 0;
+		}
+		else if (game[x][y+1] == HIT) {
+			flag = (verify(game, x, y+1, lin, col) && flag);
+		}
+	}
+	return flag;
 }
 
-int check(int **game, int x, int y) {
-	//retorna numero na posicao desejada
-	if (game[x][y] == 0) { return 0; }
-	else if (game[x][y] == 1) { return 1; }
-	else { return 2; }
-}
-
-int count(int **game, int lin, int col) {
-	//numero de navios completamente acertados
-	int navios = 0;
+int contando(char **game, int lin, int col) {
+	//Conta o numero de navios
+	int cont = 0;
 	for (int x = 0; x < lin; x++) {
 		for (int y = 0; y < col; y++) {
-			if (game[x][y] == 2) {
-				if (search(game, x, y, lin, col) == 1) {
-					printf("%d%d+1\n",x,y);
-					navios++;
-				}
+			if (game[x][y] == HIT) {
+				if (verify(game,x,y,lin,col))
+					cont++;
 			}
 		}
 	}
-	return navios;
+	return cont;
 }
