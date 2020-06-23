@@ -1,6 +1,4 @@
-
 //C99 22/03/2020
-
 #include <stdio.h>
 
 int perseguir(int);
