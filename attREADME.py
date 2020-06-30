@@ -1,4 +1,4 @@
-Python = 22
+Python = 25
 C = 64
 SQL = 4
 Total = Python + C + SQL
