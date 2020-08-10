@@ -1,5 +1,5 @@
 Python = 25
-C = 97
+C = 102
 SQL = 4
 Total = Python + C + SQL
 
