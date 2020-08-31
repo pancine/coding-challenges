@@ -5,7 +5,7 @@ Ex: Uma questão de nível 9 + uma de nível 5 geram 14 pontos no total.
 """
 
 Python = 30
-C = 185
+C = 192
 Cs = 6
 SQL = 4
 Total = Python + C + Cs + SQL
