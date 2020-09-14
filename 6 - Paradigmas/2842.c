@@ -1,4 +1,4 @@
-//C99 13/09/2020
+//C99 14/09/2020
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -7,8 +7,8 @@ int SMC(char *n, char *m);
 int max(int a, int b);
 
 int main() {
-	char *a = (char *) malloc(sizeof(char) * 5010);
-	char *b = (char *) malloc(sizeof(char) * 5010);
+	char *a = (char *) malloc(sizeof(char) * 1024);
+	char *b = (char *) malloc(sizeof(char) * 1024);
 	scanf("%s %s", &a[1], &b[1]);
 	printf("%d\n", SMC(a,b));
 
@@ -35,7 +35,7 @@ int SMC(char *n, char *m) {
 				T[i][j] = max(T[i-1][j], T[i][j-1]);
 		}
 	}
-	return T[a][b];
+	return a + b -T[a][b];
 }
 
 int max(int a, int b) {
