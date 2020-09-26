@@ -1,9 +1,9 @@
 ## Stats
-* Python = 8.98%
-* C = 87.72%
-* C++ = 0.30%
-* C# = 1.80%
-* SQL = 1.20%
+* Python = 8.82%
+* C = 86.18%
+* C++ = 2.06%
+* C# = 1.76%
+* SQL = 1.18%
 
 
 | Categories/Level              |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  10 |
@@ -12,7 +12,7 @@
 | Ad-Hoc                        |  3  |  1  |  6  |  3  |  2  |  2  |  2  |  1  |  0  |  0  |
 | Strings                       |  0  |  0  |  0  |  0  |  0  |  0  |  0  |  1  |  1  |  0  |
 | Data Structures and Libraries |  0  |  0  |  0  |  0  |  0  |  0  |  0  |  0  |  0  |  0  |
-| Mathematics                   |  1  |  0  |  2  |  2  |  7  |  3  |  0  |  1  |  5  |  2  |
+| Mathematics                   |  1  |  0  |  2  |  2  |  7  |  4  |  0  |  1  |  5  |  2  |
 | Paradigms                     |  0  |  0  |  0  |  2  |  0  |  1  |  2  |  1  |  0  |  0  |
 | Graph                         |  0  |  0  |  0  |  0  |  0  |  0  |  0  |  0  |  0  |  0  |
 | Computational Geometry        |  0  |  0  |  0  |  0  |  1  |  0  |  2  |  2  |  0  |  0  |
