@@ -108,9 +108,13 @@ bool comparatorang(ponto p2, ponto p3)
 
 int GrahamScan(vector<ponto> *vet, int num_pontos, vector<ponto> *gc)
 {
+    int num = 1;
+
     sort((*vet).begin(), (*vet).end(), comparatory);
-    miny = (*vet)[0].y;
-    sort((*vet).begin(), (*vet).end(), comparatorx);
+
+    while ((*vet)[num].y == (*vet)[0].y) num++;
+
+    sort((*vet).begin(), (*vet).begin()+num, comparatorx);
 
     origem = { (*vet)[0].x, (*vet)[0].y };
     
